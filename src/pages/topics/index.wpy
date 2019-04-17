@@ -38,7 +38,7 @@
                 <view class="weui-media-box__info topic-info">
                   <view class="weui-media-box__info__meta">{{ topic.category.name }} • </view>
                   <view class="weui-media-box__info__meta">{{ topic.user.name }} • </view>
-                  <view class="weui-media-box__info__meta">{{ topic.updated_at }}</view>
+                  <view class="weui-media-box__info__meta">{{ topic.updated_at_diff }}</view>
                 </view>
               </view>
               <view class="weui-badge reply-count">{{ topic.reply_count }}</view>
@@ -55,6 +55,7 @@
 <script>
   import wepy from 'wepy'
   import api from '@/utils/api'
+  import util from '@/utils/util'
 
   export default class TopicIndex extends wepy.page {
     config = {
@@ -64,7 +65,8 @@
       // 话题数据
       topics: [],
       // 当前分页
-      page: 1
+      page: 1,
+      noMoreData: false
     }
     // 获取话题数据
     async getTopics(page = 1, reset = false) {
@@ -77,13 +79,16 @@
             include: 'user,category'
           }
         })
-        // if (topicsResponse.statusCode === 429) {
-        //   wepy.showModal({
-        //     title: '提示',
-        //     content: '刷新过快，请稍后'
-        //   })
-        // }
+        if (topicsResponse.statusCode === 429) {
+          wepy.showModal({
+            title: '提示',
+            content: '刷新过快，请稍后'
+          })
+        }
         let topics = topicsResponse.data.data
+        topics.forEach(function (topic) {
+          topic.updated_at_diff = util.diffForHumans(topic.updated_at)
+        })
         // 如果传入参数 reset 为true，则覆盖 topics
         // 将数据合并到 this.topics
         this.topics = reset ? topics : this.topics.concat(topics)
