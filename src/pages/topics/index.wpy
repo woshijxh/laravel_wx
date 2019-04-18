@@ -114,6 +114,12 @@
             // 缓存到 sotrage 中
             wepy.setStorageSync('categories', categories)
           }
+          if (categoriesResponse.statusCode === 429) {
+            wepy.showModal({
+              title: '提示',
+              content: '操作过快，请稍候再试'
+            })
+          }
         } catch (err) {
           wepy.showModal({
             title: '提示',
@@ -155,6 +161,11 @@
         // 调用组件的 reload 方法
         this.$invoke('topiclist', 'reload')
       }
+    }
+    onShow() {
+      this.$parent.checkRefreshPages(this.getCurrentPages().pop().route, () => {
+        this.$invoke('topiclist', 'reload')
+      })
     }
   }
 </script>

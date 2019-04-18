@@ -121,7 +121,12 @@
       if (this.noMoreData || this.isLoading) {
         return
       }
-    /// 开始请求设置 isLoading 为 false
+    /// 开始请求设置 isLoading  为true
+      this.isLoading = true
+      this.syncData.page = this.syncData.page + 1
+      await this.getTopics()
+
+      // 开始结束后设置 isLoading 为 false
       this.isLoading = false
       this.$apply()
     }
