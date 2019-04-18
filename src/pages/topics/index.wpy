@@ -37,7 +37,7 @@
   }
 
   .category-list__item-hd {
-    padding: 12px;
+    padding: 10px;
     transition: opacity .3s;
     &_show {
       opacity: .4;

@@ -70,9 +70,10 @@
           }
         })
         let topic = topicResponse.data
+
         // 格式化 updated_at
         topic.updated_at_diff = util.diffForHumans(topic.updated_at)
-        topic.body = topic.body.replace(/<img/gi, '<img style="max-width:100%;height:auto" ')
+
         this.topic = topic
         this.$apply()
       } catch (err) {

@@ -65,11 +65,11 @@
       // 用户数据
       user: null
     }
-    async onload(options) {
+    async onLoad(options) {
       try {
         let userResponse = await api.request('users/' + options.id)
 
-        if (userResponse.statusCode ===200) {
+        if (userResponse.statusCode === 200) {
           this.user = userResponse.data
 
           // 格式化注册时间
@@ -81,7 +81,7 @@
 
           // 动态设置页面标题
           wepy.setNavigationBarTitle({
-            title: this.user.name + '的主页'
+            title: this.user.name + ' 的主页'
           })
         }
       } catch (err) {
