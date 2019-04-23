@@ -91,6 +91,7 @@
     }
     async onLoad() {
       this.getNotifications()
+      this.markAsRead()
     }
     // 下拉刷新
     async onPullDownRefresh() {
@@ -110,6 +111,27 @@
       await this.getNotifications()
       this.isLoading = false
       this.$apply()
+    }
+    async markAsRead() {
+      try {
+        // 标记消息为已读，不显示 loading 框
+        let markResponse = await api.authRequest({
+          url: 'user/read/notifications',
+          method: 'PUT'
+        }, false)
+
+        if (markResponse.statusCode === 204) {
+          // 设置全局未读消息为 0
+          this.$parent.globalData.unreadCount = 0
+          this.$apply()
+        }
+      } catch (err) {
+        console.log(err)
+        wepy.showModal({
+          title: '提示',
+          content: '服务器错误，请联系管理员'
+        })
+      }
     }
   }
 </script>
