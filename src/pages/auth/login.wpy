@@ -81,7 +81,7 @@
             return
           }
 
-                // 获取用户名和密码
+          // 获取用户名和密码
           let params = {
             username: this.username,
             password: this.password
@@ -99,6 +99,7 @@
 
                     // 201 为登录正确，返回上一页
             if (authResponse.statusCode === 201) {
+              this.$parent.getPerms()
               wepy.navigateBack()
             }
           } catch (err) {
@@ -117,6 +118,8 @@
 
                 // 登录成功返回上一页
           if (authResponse.statusCode === 201) {
+            // 获取用户权限
+            this.$parent.getPerms()
             wepy.navigateBack()
           }
         } catch (err) {
